@@ -42,10 +42,6 @@ def fetch_batch(id_lst, output, pool):
     num_null = 0
     num_timeout = 0
     for j in r:
-        if j['type'] == 'null':
-            num_null += 1
-        elif j['type'] == 'timeout':
-            num_timeout += 1
         json.dump(j, output)
         output.write('\n')
     return num_null, num_timeout
@@ -55,7 +51,7 @@ def printWithDate(s, **kwargs):
 
 def getItem(item_id):
     try:
-        r = requests.get(urllib.parse.urljoin(baseurl, f'user/{item_id}.json'), timeout = 5)
+        r = requests.get(urllib.parse.urljoin(baseurl, f'user/{item_id}.json'), timeout = 30)
     except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError, OSError):
         return {'id' : item_id, 'type' : 'timeout'}
     j = r.json()
